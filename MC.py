@@ -59,25 +59,25 @@ if selected == 'BMI':
     st.title('BMI Classification')
 
     Gender = st.selectbox('Gender', ('Female', 'Male'))
-    Height = st.number_input('Height (cm)')
-    Weight = st.number_input('Weight (kg)')
+    Height = st.number_input('Height (cm)', min_value=1.0)
+    Weight = st.number_input('Weight (kg)', min_value=1.0)
 
     bmi_prediction = ''
 
     if st.button('Predict'):
 
-        # แปลง Gender ให้ตรงกับ LabelEncoder
-        if Gender == 'Female':
-            Gender = 0
-        else:
-            Gender = 1
+        # คำนวณ BMI
+        bmi = Weight / ((Height / 100) ** 2)
 
-        prediction = bmi_model.predict([[Gender, Height, Weight]])
-
-        if prediction[0] == 1:
-            bmi_prediction = 'Overweight'
+        # จัดเกณฑ์
+        if bmi < 18.5:
+            bmi_prediction = 'ผอม'
+        elif bmi < 25:
+            bmi_prediction = 'ปกติ'
         else:
-            bmi_prediction = 'Normal'
+            bmi_prediction = 'อ้วน'
+
+        st.write(f'ค่า BMI = {bmi:.2f}')
 
     st.success(bmi_prediction)
     
@@ -131,6 +131,7 @@ if selected == 'Used_cars':
         Price_predict = round(Price_predict[0],2)
 
     st.success(Price_predict)
+
 
 
 
